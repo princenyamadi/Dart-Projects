@@ -3,6 +3,8 @@ class Point {
   final int x;
   final int y;
 
+
+
   @override
   String toString() => 'Point($x, $y)';
 
@@ -18,8 +20,8 @@ class Point {
     return Point(x + other.x, y + other.y);
   }
 
-  Point operator *(Point other) {
-    return Point(x * other.x, y * other.y);
+  Point operator *(int other) {
+    return Point(x * other, y * other);
   }
 }
 
