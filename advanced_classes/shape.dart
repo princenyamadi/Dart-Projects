@@ -2,6 +2,27 @@ import 'dart:math';
 
 abstract class Shape {
   double get area;
+  const Shape();
+
+  factory Shape.fromJson(Map<String, Object> json) {
+    final type = json['type'];
+    switch (type) {
+      case 'sqaure':
+        final side = json['side'];
+        if (side is double) {
+          return Square(side);
+        }
+        throw UnsupportedError('invalid or missing side property');
+      case 'circle':
+        final radius = json['side'];
+        if (radius is double) {
+          return Circle(radius);
+        }
+        throw UnsupportedError("invalid or missing radius property");
+      default:
+        throw UnimplementedError('shape $type not recognized');
+    }
+  }
 }
 
 class Square extends Shape {
@@ -26,14 +47,11 @@ void printArea(Shape shape) {
 }
 
 void main() {
-  final square = Square(10);
-  print(square.area);
-  printArea(square);
+  final shapesJson = [
+    {'type': 'square', 'side': 10.0},
+    {'type': 'circle', 'side': 5.0},
+  ];
 
-  final circle = Circle(5);
-  print(circle);
-
-  final shapes = [Square(2), Square(3)];
-
-  shapes.forEach((shape) => printArea(shape));
+  final shapes = shapesJson.map((shapeJson) => Shape.fromJson(shapeJson));
+  shapes.forEach(printArea);
 }
